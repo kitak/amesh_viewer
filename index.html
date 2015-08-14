@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>Amesh Viewer</title>
   <style>
+    html, body, div, img {
+      margin: 0;
+      padding: 0;
+    }
     #wrapper {
+      position: absolute;
+      width: 770px;
+      height: 460px;
+    }
+    #wrapper canvas {
       position: absolute;
       width: 770px;
       height: 460px;
@@ -14,13 +23,46 @@
       width: 770px;
       height: 460px;
     }
+    .circle {
+      position: absolute;
+      left: 387px; /* 467-80 */
+      top: 157px; /* 237-80 */
+      width: 160px;
+      height: 160px;
+      border-radius: 80px;
+      border: solid 2px;
+    }
   </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      new Notification('title', {body: '本文'});
+      var map = document.getElementById('boundary-line');
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+      var rainCloud = document.getElementById('rain-cloud');
+
+      map.addEventListener('click', function (e) {
+        console.log(e.offsetX);
+        console.log(e.offsetY);
+
+        var data = context.getImageData(e.offsetX, e.offsetY, 1, 1);
+        console.log(data);
+      }, false);
+
+      rainCloud.onload = function () {
+        alert('onload');
+        context.drawImage(rainCloud, 0, 0, 770, 460);
+      };
+    }, false);
+  </script>
 </head>
 <body>
   <div id="wrapper">
+    <canvas id="canvas" width="770" height="460"></canvas>
     <img id="map" src="http://tokyo-ame.jwa.or.jp/map/map000.jpg" alt="">
     <img id="rain-cloud" src="http://tokyo-ame.jwa.or.jp/mesh/000/201508141535.gif" alt="">
     <img id="boundary-line" src="http://tokyo-ame.jwa.or.jp/map/msk000.png" alt="">
+    <div class="circle"></div>
   </div>
 </body>
 </html>

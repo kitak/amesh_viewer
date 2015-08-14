@@ -14,7 +14,7 @@ if (process.platform !== 'darwin') {
 })
 
 app.on('ready', function () {
-  mainWindow = new BrowserWindow({width: 800, height: 800});
+  mainWindow = new BrowserWindow({width: 770, height: 460});
   mainWindow.loadUrl('file://'+__dirname+'/index.html');
   mainWindow.openDevTools(true);
 
