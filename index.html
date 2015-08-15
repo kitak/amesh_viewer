@@ -23,14 +23,6 @@
       width: 770px;
       height: 460px;
     }
-    .circle {
-      position: absolute;
-      left: 387px; /* 467-80 */
-      top: 157px; /* 237-80 */
-      width: 160px;
-      height: 160px;
-      border: solid 2px;
-    }
   </style>
   <script src="./node_modules/moment/min/moment.min.js"></script>
   <script>
@@ -45,33 +37,8 @@
         minute = minute[0]+'5';
       }
       rainCloud.src = "http://tokyo-ame.jwa.or.jp/mesh/000/"+(momentDate.format('YYYYMMDDhh'))+minute+".gif";
-      console.log(rainCloud)
     };
     document.addEventListener('DOMContentLoaded', function () {
-      var map = document.getElementById('boundary-line');
-      var canvas = document.getElementById('canvas');
-      var context = canvas.getContext('2d');
-      var rainCloud = document.getElementById('rain-cloud');
-
-      rainCloud.onload = function () {
-        context.drawImage(rainCloud, 0, 0, 770, 460);
-
-        var image = context.getImageData(387, 157, 160, 160);
-        var data = image.data;
-        var existCloud = false;
-        for (var i=0; i < data.length; i+=4) {
-          if (data[i] !== 0 ||
-              data[i+1] !== 0 ||
-              data[i+2] !== 0 ||
-              data[i+3] !== 0) {
-             existCloud = true;
-          }
-        }
-        if (existCloud) {
-          new Notification('雲がいます', {body: '雲がいます'});
-        }
-      };
-
       (function repeatFetchingCloudImage() {
         fetchCloudImage();
         setTimeout(repeatFetchingCloudImage, 1000*60*5);
@@ -81,11 +48,9 @@
 </head>
 <body>
   <div id="wrapper">
-    <canvas id="canvas" width="770" height="460"></canvas>
     <img id="map" src="http://tokyo-ame.jwa.or.jp/map/map000.jpg" alt="">
     <img id="rain-cloud" src="" alt="">
     <img id="boundary-line" src="http://tokyo-ame.jwa.or.jp/map/msk000.png" alt="">
-    <div class="circle"></div>
   </div>
 </body>
 </html>
