@@ -13,5 +13,8 @@
   "homepage": "https://github.com/kitak/amesh_viewer#readme",
   "devDependencies": {
     "electron-prebuilt": "^0.30.4"
+  },
+  "dependencies": {
+    "moment": "^2.10.6"
   }
 }

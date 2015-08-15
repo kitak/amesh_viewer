@@ -29,30 +29,53 @@
       top: 157px; /* 237-80 */
       width: 160px;
       height: 160px;
-      border-radius: 80px;
       border: solid 2px;
     }
   </style>
+  <script src="./node_modules/moment/min/moment.min.js"></script>
   <script>
+    var fetchCloudImage = function () {
+      var rainCloud = document.getElementById('rain-cloud');
+      var date = new Date();
+      var momentDate = moment(date);
+      var minute = momentDate.format('mm');
+      if (+minute[1] <= 5) {
+        minute = minute[0]+'0';
+      } else {
+        minute = minute[0]+'5';
+      }
+      rainCloud.src = "http://tokyo-ame.jwa.or.jp/mesh/000/"+(momentDate.format('YYYYMMDDhh'))+minute+".gif";
+      console.log(rainCloud)
+    };
     document.addEventListener('DOMContentLoaded', function () {
-      new Notification('title', {body: '本文'});
       var map = document.getElementById('boundary-line');
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
       var rainCloud = document.getElementById('rain-cloud');
 
-      map.addEventListener('click', function (e) {
-        console.log(e.offsetX);
-        console.log(e.offsetY);
-
-        var data = context.getImageData(e.offsetX, e.offsetY, 1, 1);
-        console.log(data);
-      }, false);
-
       rainCloud.onload = function () {
-        alert('onload');
         context.drawImage(rainCloud, 0, 0, 770, 460);
+
+        var image = context.getImageData(387, 157, 160, 160);
+        var data = image.data;
+        var existCloud = false;
+        for (var i=0; i < data.length; i+=4) {
+          if (data[i] !== 0 ||
+              data[i+1] !== 0 ||
+              data[i+2] !== 0 ||
+              data[i+3] !== 0) {
+             existCloud = true;
+          }
+        }
+        if (existCloud) {
+          new Notification('雲がいます', {body: '雲がいます'});
+        }
       };
+
+      (function repeatFetchingCloudImage() {
+        fetchCloudImage();
+        setTimeout(repeatFetchingCloudImage, 1000*60*5);
+      })();
     }, false);
   </script>
 </head>
@@ -60,7 +83,7 @@
   <div id="wrapper">
     <canvas id="canvas" width="770" height="460"></canvas>
     <img id="map" src="http://tokyo-ame.jwa.or.jp/map/map000.jpg" alt="">
-    <img id="rain-cloud" src="http://tokyo-ame.jwa.or.jp/mesh/000/201508141535.gif" alt="">
+    <img id="rain-cloud" src="" alt="">
     <img id="boundary-line" src="http://tokyo-ame.jwa.or.jp/map/msk000.png" alt="">
     <div class="circle"></div>
   </div>
