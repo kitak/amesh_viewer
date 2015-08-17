@@ -26,12 +26,19 @@
       var date = new Date();
       var momentDate = moment(date);
       var minute = momentDate.format('mm');
-      if (+minute[1] <= 5) {
+      var fileName = '';
+      if (+minute[1] == 0) {
+        momentDate = momentDate.subtract(1, 'minutes');
+        minute = momentDate.format('mm');
+        fileName = momentDate.format('YYYYMMDDhh')+minute[0]+"5.gif";
+      } else if (+minute[1] <= 5) {
         minute = minute[0]+'0';
+        fileName = momentDate.format('YYYYMMDDhh')+minute+".gif";
       } else {
         minute = minute[0]+'5';
+        fileName = momentDate.format('YYYYMMDDhh')+minute+".gif";
       }
-      rainCloud.src = "http://tokyo-ame.jwa.or.jp/mesh/000/"+(momentDate.format('YYYYMMDDhh'))+minute+".gif";
+      rainCloud.src = "http://tokyo-ame.jwa.or.jp/mesh/000/"+fileName;
     };
     document.addEventListener('DOMContentLoaded', function () {
       (function repeatFetchingCloudImage() {

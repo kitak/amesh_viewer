@@ -14,9 +14,12 @@ if (process.platform !== 'darwin') {
 })
 
 app.on('ready', function () {
-  mainWindow = new BrowserWindow({width: 770, height: 460});
+  mainWindow = new BrowserWindow({
+    width: 770,
+    height: 460,
+    resizable: false
+  });
   mainWindow.loadUrl('file://'+__dirname+'/index.html');
-  mainWindow.openDevTools(true);
 
   mainWindow.on('closed', function () {
     mainWindow = null;
